@@ -35,7 +35,8 @@ module "vpn" {
 
   name_prefix             = "my-project"
   subnet_id               = "subnet-01248371de43fd6e0"
-  private_route_table_ids = toset(["rtb-0e6307bd892bc7a62"])
+  private_cidr_blocks     = ["10.0.1.0/24"]
+  private_route_table_ids = ["rtb-0e6307bd892bc7a62"]
   domain_name             = "vpn.example.com"
   usernames               = ["john@example.com"]
   client_pool             = "10.10.10.0/24"
