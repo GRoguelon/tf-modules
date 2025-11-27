@@ -8,4 +8,9 @@ locals {
   username           = var.username
   db_name            = var.db_name
   db_params          = var.db_params
+  version            = var.db_version
+  major_version      = split(".", local.version)[0]
+  instance_type      = var.instance_type
+  multi_az = var.multi_az
+  publicly_accessible = var.publicly_accessible
 }

@@ -40,3 +40,37 @@ variable "db_params" {
   type        = map(string)
   default     = {}
 }
+
+variable "db_version" {
+  description = "Defines the version of PostgreSQL"
+  type        = string
+  default     = "18.1"
+
+  validation {
+    condition     = contains(["16.6", "16.8", "16.9", "16.10", "16.11", "17.2", "17.4", "17.5", "17.6", "17.7", "18.1"], var.db_version)
+    error_message = "The version must be one of 16.6, 16.8, 16.9, 16.10, 16.11, 17.2, 17.4, 17.5, 17.6, 17.7, 18.1"
+  }
+}
+
+variable "instance_type" {
+  description = "Defines the type of the RDS instance"
+  type        = string
+  default     = "db.t4g.micro"
+
+  validation {
+    condition     = length(var.instance_type) > 0 && substr(var.instance_type, 0, 3) == "db."
+    error_message = "The instance_type value must be a valid RDS instance type, starting with \"db.\"."
+  }
+}
+
+variable "multi_az" {
+  description = "Defines if the database is deployed accross several AZs"
+  type        = bool
+  default     = false
+}
+
+variable "publicly_accessible" {
+  description = "Defines if the database is publicly available on Internet"
+  type        = bool
+  default     = false
+}

@@ -47,9 +47,9 @@ module "vpn" {
 }
 ```
 
-### AWS RDS - PostgreSQL
+### RDS - PostgreSQL
 
-Deploy AWS RDS PostgreSQL 18.1 in a single AZ.
+Deploy AWS RDS PostgreSQL database in a single AZ.
 
 #### Example
 
@@ -62,10 +62,12 @@ module "vpn" {
   private_subnet_ids = ["subnet-01248371de43f23e4", "subnet-0ae926be1212e84f3"]
 
   # Optional:
-  username           = "my-username"
-  db_name            = "my-db-name"
-  db_params          = {
-    log_connections = 1
-  }
+  db_version          = "18.1"
+  instance_type       = "db.t4g.micro"
+  multi_az            = false
+  publicly_accessible = false
+  username            = "my-project"
+  db_name             = "my_project"
+  db_params           = {}
 }
 ```
