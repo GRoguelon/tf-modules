@@ -1,5 +1,5 @@
 resource "aws_iam_role" "main" {
-  name_prefix = "${var.name_prefix}-vpn-"
+  name_prefix = "${local.name_prefix}-vpn-"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -21,7 +21,7 @@ resource "aws_iam_role_policy_attachment" "main" {
 }
 
 resource "aws_iam_instance_profile" "main" {
-  name_prefix = "${var.name_prefix}-vpn-profile-"
+  name_prefix = "${local.name_prefix}-vpn-profile-"
   role        = aws_iam_role.main.name
 
   lifecycle {

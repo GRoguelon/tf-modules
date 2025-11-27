@@ -24,5 +24,5 @@ data "aws_ami" "ubuntu" {
 }
 
 data "aws_subnet" "main" {
-  id = var.subnet_id
+  id = local.subnet_id
 }

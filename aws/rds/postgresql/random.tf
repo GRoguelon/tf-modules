@@ -1,4 +1,3 @@
-
 resource "random_password" "rds_password" {
   length           = 64
   special          = true

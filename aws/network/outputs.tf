@@ -23,7 +23,7 @@ output "private_route_tables" {
   value       = aws_route_table.private
 }
 
-output "public_route_table" {
+output "public_route_tables" {
   description = "Outputs the AWS route table for the public subnet"
-  value       = aws_route_table.public.id
+  value       = aws_route_table.public
 }
