@@ -4,6 +4,10 @@ resource "aws_security_group" "main" {
   description            = "Security group for StrongSwan VPN server"
   revoke_rules_on_delete = true
 
+  tags = {
+    Name = "${var.name_prefix}-sg-vpn"
+  }
+
   lifecycle {
     create_before_destroy = true
   }
