@@ -62,24 +62,28 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_internet_gateway" "main" {
-  count = local.nbr_public_subnets > 0 ? 1 : 0
-
   vpc_id = aws_vpc.main.id
 
   tags = {
     Name = "${local.name_prefix}-igw"
     Tier = "public"
   }
+
+  lifecycle {
+    enabled = local.nbr_public_subnets > 0
+  }
 }
 
 resource "aws_egress_only_internet_gateway" "main" {
-  count = local.nbr_public_subnets > 0 && local.enable_vpc_ipv6 ? 1 : 0
-
   vpc_id = aws_vpc.main.id
 
   tags = {
     Name = "${local.name_prefix}-eigw"
     Tier = "public"
+  }
+
+  lifecycle {
+    enabled = local.nbr_public_subnets > 0 && local.enable_vpc_ipv6
   }
 }
 
@@ -111,7 +115,6 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_route_table" "public" {
-  count = local.nbr_public_subnets > 0 ? 1 : 0
 
   vpc_id = aws_vpc.main.id
 
@@ -119,12 +122,16 @@ resource "aws_route_table" "public" {
     Name = "${local.name_prefix}-rt-igw"
     Tier = "public"
   }
+
+  lifecycle {
+    enabled = local.nbr_public_subnets > 0
+  }
 }
 
 resource "aws_route_table_association" "public" {
   count = local.nbr_public_subnets
 
-  route_table_id = aws_route_table.public[0].id
+  route_table_id = aws_route_table.public.id
   subnet_id      = aws_subnet.public[count.index].id
 }
 
@@ -146,19 +153,23 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_route" "public_internet" {
-  count = local.nbr_public_subnets > 0 ? 1 : 0
-
-  route_table_id         = aws_route_table.public[count.index].id
+  route_table_id         = aws_route_table.public.id
   destination_cidr_block = local.wildcard_ipv4
-  gateway_id             = aws_internet_gateway.main[count.index].id
+  gateway_id             = aws_internet_gateway.main.id
+
+  lifecycle {
+    enabled = local.nbr_public_subnets > 0
+  }
 }
 
 resource "aws_route" "public_internet_ipv6" {
-  count = local.nbr_public_subnets > 0 && local.enable_vpc_ipv6 ? 1 : 0
-
-  route_table_id              = aws_route_table.public[count.index].id
+  route_table_id              = aws_route_table.public.id
   destination_ipv6_cidr_block = local.wildcard_ipv6
-  egress_only_gateway_id      = aws_egress_only_internet_gateway.main[count.index].id
+  egress_only_gateway_id      = aws_egress_only_internet_gateway.main.id
+
+  lifecycle {
+    enabled = local.nbr_public_subnets > 0 && local.enable_vpc_ipv6
+  }
 }
 
 resource "aws_route" "private_nat" {
