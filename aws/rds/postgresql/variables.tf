@@ -47,8 +47,8 @@ variable "db_version" {
   default     = "18.1"
 
   validation {
-    condition     = contains(["16.6", "16.8", "16.9", "16.10", "16.11", "17.2", "17.4", "17.5", "17.6", "17.7", "18.1"], var.db_version)
-    error_message = "The version must be one of 16.6, 16.8, 16.9, 16.10, 16.11, 17.2, 17.4, 17.5, 17.6, 17.7, 18.1"
+    condition     = contains(["16.6", "16.8", "16.9", "16.10", "16.11", "17.2", "17.4", "17.5", "17.6", "17.7", "18.1", "18.2"], var.db_version)
+    error_message = "The version must be one of 16.6, 16.8, 16.9, 16.10, 16.11, 17.2, 17.4, 17.5, 17.6, 17.7, 18.1, 18.2"
   }
 }
 
